@@ -73,6 +73,10 @@ After starting the server (for Web UI) or running the CLI application, you can s
 
 Plumber Game is a puzzle game where the objective is to rotate pipes to connect a water flow from the start to the end. The game board consists of various pipe segments that can be rotated to create a continuous path for the water to flow.
 
+## Sprites
+
+All sprites for the game are pixel-drawn by the developer.
+
 ## Images
 
 ### Login Page:
