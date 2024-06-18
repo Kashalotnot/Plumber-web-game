@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        .font-pixel { font-family: 'Press Start 2P', cursive; }
+    </style>
+</head>
+<body class="bg-black text-green-400 font-pixel flex items-center justify-center min-h-screen">
+<div class="w-full max-w-xs">
+    <h1 class="text-2xl mb-6 text-center">Login</h1>
+    <div th:if="${error}" th:text="${error}" class="bg-red-700 p-3 rounded mb-6 text-center">
+        Error: Incorrect username or password.
+    </div>
+    <form th:action="@{/plumber/login}" method="post" class="bg-gray-900 p-6 rounded shadow-md">
+        <div class="mb-4">
+            <label for="login" class="block text-sm font-medium text-gray-300">Username:</label>
+            <input type="text" name="login" id="login" required class="w-full mt-1 p-2 bg-gray-800 text-white rounded"/>
+        </div>
+        <div class="mb-6">
+            <label for="password" class="block text-sm font-medium text-gray-300">Password:</label>
+            <input type="password" name="password" id="password" required class="w-full mt-1 p-2 bg-gray-800 text-white rounded"/>
+        </div>
+        <input type="submit" value="Login" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"/>
+    </form>
+    <a href="/plumber/register" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 mt-4 text-center w-full">
+        Sign Up
+    </a>
+</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>404 Error - Page Not Found</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        .font-pixel { font-family: 'Press Start 2P', cursive; }
+    </style>
+</head>
+
+<body class="bg-black text-green-400 font-pixel flex flex-col items-center justify-center min-h-screen">
+
+<div class="absolute top-0 left-0 m-4">
+    <a href="/plumber" class="bg-green-400 text-black px-4 py-2 rounded hover:bg-green-500 transition-colors duration-300">
+        &#8592; Back to Plumber Game
+    </a>
+</div>
+
+<div class="flex flex-col items-center justify-center h-full">
+    <h1 class="text-3xl mt-16">404 - Page Not Found</h1>
+    <div class="w-11/12 md:w-10/12 lg:w-9/12 xl:w-8/12 mx-auto p-4 bg-gray-900 rounded-lg shadow">
+        <p class="text-lg text-center">
+            Oops! The page you are looking for does not exist.
+        </p>
+    </div>
+</div>
+
+</body>
+
+</html>

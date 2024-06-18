@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<div th:fragment="commentsDisplay" class="bg-black text-green-400 font-pixel w-full px-4 lg:px-10">
+
+  <div class="w-full lg:max-w-6xl mx-auto p-4 bg-gray-900 rounded-lg shadow">
+    <form id="commentForm">
+      <input type="hidden" name="game" value="Plumber"/>
+      <input type="hidden" id="player" th:value="${user}"/>
+      <div class="mb-2">
+        <label for="commentText" class="block mb-2 text-sm font-medium text-gray-300">Comment:</label>
+        <input type="text" id="commentText" class="w-full p-2 text-black" placeholder="Enter your comment here"/>
+      </div>
+      <button type="button" onclick="submitComment()" class="w-full bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 rounded">
+        Post Comment
+      </button>
+    </form>
+  </div>
+
+  <div id="commentsContainer" class="w-full lg:max-w-6xl mx-auto p-4 bg-gray-900 rounded-lg shadow">
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript">
+    function fetchComments() {
+      $.ajax({
+        url: '/api/comment/Plumber',
+        method: 'GET',
+        success: function (comments) {
+          $('#commentsContainer').empty();
+          comments.forEach(function (comment) {
+            $('#commentsContainer').append(
+                    '<div class="p-3 m-2 bg-gray-700 rounded">' +
+                    '<h4 class="text-lg text-green-600">' + comment.player + ' - <small>' + new Date(comment.commentedOn).toLocaleDateString() + '</small></h4>' +
+                    '<p>' + comment.comment + '</p>' +
+                    '</div>'
+            );
+          });
+        },
+        error: function (error) {
+          console.error('Error fetching comments:', error);
+        }
+      });
+    }
+
+    function submitComment() {
+      if (document.getElementById('commentText').value.trim() === "") {
+        return;
+      }
+      let data = {
+        game: document.getElementById('commentForm').game.value,
+        player: document.getElementById('player').value,
+        comment: document.getElementById('commentText').value,
+        commentedOn: new Date()
+      };
+
+      $.ajax({
+        url: '/api/comment',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(response) {
+          fetchComments();
+        },
+        error: function() {
+          alert('Failed to post comment');
+        }
+      });
+    }
+
+    $(document).ready(function () {
+      fetchComments();
+    });
+  </script>
+</div>
+</html>

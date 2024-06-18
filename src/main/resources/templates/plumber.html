@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plumber</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/plumber.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const starsContainer = document.getElementById('starsContainer');
+            const stars = [];
+
+            // Function to highlight stars up to a specified index
+            function highlightStars(targetIndex) {
+                stars.forEach(function(star, index) {
+                    if (index <= targetIndex) {
+                        star.src = '/images/Stars/star_red.png';
+                    } else {
+                        star.src = '/images/Stars/star_empty.png';
+                    }
+                });
+            }
+
+            // Reset all stars to amount of rated by user
+
+            /*<![CDATA[*/
+            const userRating = [[${userRating}]]; // Default value if userRating is not set
+            console.log("User Rating:", userRating);
+            /*]]>*/
+            function resetStars() {
+                stars.forEach((star, index) => {
+                    star.src = index < userRating ? '/images/Stars/star_red.png' : '/images/Stars/star_empty.png';
+                });
+            }
+
+            // Initialize stars based on userRating
+
+            for (let i = 0; i < 5; i++) {
+                const star = document.createElement('img');
+                star.className = 'm-2 h-8 w-8 sm:h-8 sm:w-8 md:h-10 md:w-10 lg:h-16 lg:w-16';
+                star.src = i < userRating ? '/images/Stars/star_red.png' : '/images/Stars/star_empty.png';
+                star.classList.add('star');
+                star.setAttribute('data-index', i);
+                starsContainer.appendChild(star);
+                stars.push(star);
+
+                star.addEventListener('mouseover', function() {
+                    highlightStars(i);
+                });
+
+                star.addEventListener('mouseout', function() {
+                    resetStars();
+                });
+
+                star.addEventListener('click', function() {
+                    const starIndex = parseInt(star.getAttribute('data-index'));
+                    window.location.href = '/plumber?rating=' + (starIndex + 1);
+                });
+            }
+        });
+    </script>
+
+
+</head>
+<body class="bg-black text-green-400 font-pixel flex flex-col items-center justify-between min-h-screen">
+
+
+<div class="w-full max-w-4xl my-8 text-center">
+    <div>
+        <h1>Game rating:</h1>
+        <div class="flex flex-row items-center justify-center " th:utext="${@plumberController.getAverageRating()}"></div>
+    </div>
+    <div class="flex flex-col items-center justify-center inline-flex">
+        <span th:utext="${@plumberController.getHtmlField()}" class="arcade-border mb-8"></span>
+    </div>
+    <div class="flex flex-row items-center justify-center">
+    <div class="w-24  my-5">
+            <span th:text="${T(java.lang.String).format('%02d:%02d', @plumberController.getCurrentTimeSec() div 60, @plumberController.getCurrentTimeSec() mod 60)}"
+                  class="arcade-border mb-8"></span>
+    </div>
+    </div>
+    <div class="flex flex-row items-center justify-center">
+        <div class="figure w-24">
+            <a href="/plumber/hint" >
+                <img src="/images/Buttons/hint.png" class="Sirv image-main" alt="Default">
+                <img src="/images/Buttons/hint_pressed.png" class="Sirv image-hover" alt="Hover">
+            </a>
+        </div   >
+        <div class="figure  w-24" >
+            <a href="/plumber/new">
+                <img src="/images/Buttons/restart.png" class="Sirv image-main" alt="Default">
+                <img src="/images/Buttons/restart_pressed.png" class="Sirv image-hover" alt="Hover">
+            </a>
+        </div   >
+        <div class="figure  w-24">
+            <a href="/plumber/logout" >
+                <img src="/images/Buttons/quit.png" class="Sirv image-main" alt="Default">
+                <img src="/images/Buttons/quit_pressed.png" class="Sirv image-hover" alt="Hover">
+            </a>
+        </div   >
+        <div class="figure_stick w-24">
+            <a href="/plumber/score" >
+                <img src="/images/Buttons/score.png" class="Sirv image-main" alt="Default">
+                <img src="/images/Buttons/score_pressed.png" class="Sirv image-hover" alt="Hover">
+            </a>
+        </div   >
+
+    </div>
+
+
+</div>
+<div class="flex space-x-2">
+<div class="flex flex-row " id="starsContainer"></div>
+</div>
+<div th:replace="~{comments::commentsDisplay}" th:value="${user}">
+</div>
+
+
+</body>
+</html>
